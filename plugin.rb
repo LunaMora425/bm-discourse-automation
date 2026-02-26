@@ -10,7 +10,6 @@
 enabled_site_setting :bm_discourse_automation_enabled
 
 after_initialize do
-
   # ============================================================
   # AUTOMATION 1: Archive Mover
   # Moves topics to a paired archive category when archived.
@@ -23,18 +22,17 @@ after_initialize do
     source_category = topic.category
     next unless source_category
 
-    raw_map = SiteSetting.bm_archive_category_map
-    archive_map = JSON.parse(raw_map) rescue {}
+    mappings = SiteSetting.bm_archive_category_map
+    next if mappings.blank?
 
-    archive_slug = archive_map[source_category.slug]
-    next unless archive_slug
+    match = mappings.find { |m| m["source_category"].to_i == source_category.id }
+    next unless match
 
-    archive_category = Category.find_by(slug: archive_slug)
+    archive_category = Category.find_by(id: match["archive_category"].to_i)
     next unless archive_category
     next if topic.category_id == archive_category.id
 
     topic.change_category_to_id(archive_category.id)
     topic.save!
   end
-
 end

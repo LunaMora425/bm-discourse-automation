@@ -3,6 +3,14 @@ plugins:
     default: false
     client: true
   bm_archive_category_map:
-    default: '{"feedback":"feedback-archive","general":"general-archive"}'
-    type: string
-    client: true
+    type: objects
+    default: []
+    schema:
+      name: category_archive_mapping
+      properties:
+        source_category:
+          type: category
+          required: true
+        archive_category:
+          type: category
+          required: true
