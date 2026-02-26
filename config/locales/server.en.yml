@@ -1,15 +1,4 @@
 en:
   site_settings:
-    bm_discourse_automation: "BM Discourse Automation"
-    bm_discourse_automation_enabled: "Enable BM Discourse Automation"
-    bm_archive_category_map: "Archive Category Map"
-    bm_archive_category_map_description: "Map source categories to their archive counterparts. When a topic is archived, it will be moved to the specified archive category."
-    schema:
-      bm_archive_category_map:
-        properties:
-          source_category:
-            label: "Source Category"
-            description: "The category a topic is archived from"
-          archive_category:
-            label: "Archive Category"
-            description: "The category the topic will be moved to when archived"
+    bm_discourse_automation_enabled: Enable BM Discourse Automation
+    bm_archive_category_map: Archive Category Map

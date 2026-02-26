@@ -2,15 +2,24 @@ plugins:
   bm_discourse_automation_enabled:
     default: false
     client: true
+
   bm_archive_category_map:
+    client: true
     type: objects
     default: []
     schema:
-      name: category_archive_mapping
+      name: New Map
+      identifier: source_category
       properties:
         source_category:
-          type: category
+          type: categories
+          label: "Source Category"
           required: true
+          validations:
+            max: 1
         archive_category:
-          type: category
+          type: categories
+          label: "Archive Category"
           required: true
+          validations:
+            max: 1

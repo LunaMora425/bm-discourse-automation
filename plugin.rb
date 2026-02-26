@@ -13,26 +13,25 @@ after_initialize do
   # ============================================================
   # AUTOMATION 1: Archive Mover
   # Moves topics to a paired archive category when archived.
-  # Config: JSON map of { "source-slug" => "archive-slug" }
   # ============================================================
 
   on(:topic_status_updated) do |topic, status, enabled|
-    next unless status == "archived" && enabled
+  next unless status == "archived" && enabled
 
-    source_category = topic.category
-    next unless source_category
+  source_category = topic.category
+  next unless source_category
 
-    mappings = SiteSetting.bm_archive_category_map
-    next if mappings.blank?
+  mappings = SiteSetting.bm_archive_category_map
+  next if mappings.blank?
 
-    match = mappings.find { |m| m["source_category"].to_i == source_category.id }
-    next unless match
+  match = mappings.find { |m| m["source_category"] == source_category.slug }
+  next unless match
 
-    archive_category = Category.find_by(id: match["archive_category"].to_i)
-    next unless archive_category
-    next if topic.category_id == archive_category.id
+  archive_category = Category.find_by(slug: match["archive_category"])
+  next unless archive_category
+  next if topic.category_id == archive_category.id
 
-    topic.change_category_to_id(archive_category.id)
-    topic.save!
-  end
+  topic.change_category_to_id(archive_category.id)
+  topic.save!
+end
 end
