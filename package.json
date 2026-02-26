@@ -1,14 +1,15 @@
 {
   "private": true,
   "devDependencies": {
-    "@discourse/lint-configs": "2.37.1",
-    "@glint/ember-tsc": "1.0.9",
+    "@babel/plugin-proposal-decorators": "^7.29.0",
+    "@discourse/lint-configs": "2.40.0",
+    "@glint/ember-tsc": "1.1.1",
     "concurrently": "^9.2.1",
     "discourse": "npm:@discourse/types@2026.1.0-2709d36",
     "ember-template-lint": "7.9.3",
-    "eslint": "9.39.2",
-    "prettier": "3.8.0",
-    "stylelint": "17.0.0"
+    "eslint": "10.0.2",
+    "prettier": "3.8.1",
+    "stylelint": "17.4.0"
   },
   "scripts": {
     "lint": "concurrently \"pnpm:lint:*(!fix)\" --names \"lint:\"",

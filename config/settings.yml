@@ -1,4 +1,8 @@
-TODO_plugin_name:
-  plugin_name_enabled:
+plugins:
+  bm_discourse_automation_enabled:
     default: false
+    client: true
+  bm_archive_category_map:
+    default: '{"feedback":"feedback-archive","general":"general-archive"}'
+    type: string
     client: true

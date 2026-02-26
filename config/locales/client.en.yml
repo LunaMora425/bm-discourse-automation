@@ -3,7 +3,9 @@ en:
     admin:
       site_settings:
         categories:
-          TODO_plugin_name: "Plugin Name"
+          bm_discourse_automation: "BM Discourse Automation"
+          bm_discourse_automation_enabled: "Is this plugin enabled?"
+          bm_archive_category_map: "Archive Category Map (JSON format)"
   js:
-    discourse_plugin_name:
-      placeholder: placeholder
+    bm_discourse_automation:
+      title: "BM Discourse Automation"
