@@ -16,22 +16,27 @@ after_initialize do
   # ============================================================
 
   on(:topic_status_updated) do |topic, status, enabled|
-  next unless status == "archived" && enabled
+    next unless status == "archived" && enabled
 
-  source_category = topic.category
-  next unless source_category
+    source_category = topic.category
+    next unless source_category
 
-  mappings = SiteSetting.bm_archive_category_map
-  next if mappings.blank?
+    mappings = SiteSetting.bm_archive_category_map
+    next if mappings.blank?
 
-  match = mappings.find { |m| m["source_category"] == source_category.slug }
-  next unless match
+    match =
+      mappings.find do |m|
+        source_ids = Array(m["source_category"]).map(&:to_i)
+        source_ids.include?(source_category.id)
+      end
+    next unless match
 
-  archive_category = Category.find_by(slug: match["archive_category"])
-  next unless archive_category
-  next if topic.category_id == archive_category.id
+    archive_id = Array(m["archive_category"]).first.to_i
+    archive_category = Category.find_by(id: archive_id)
+    next unless archive_category
+    next if topic.category_id == archive_category.id
 
-  topic.change_category_to_id(archive_category.id)
-  topic.save!
-end
+    topic.change_category_to_id(archive_category.id)
+    topic.save!
+  end
 end

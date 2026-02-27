@@ -15,8 +15,6 @@ plugins:
           type: categories
           label: "Source Category"
           required: true
-          validations:
-            max: 1
         archive_category:
           type: categories
           label: "Archive Category"
