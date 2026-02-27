@@ -21,7 +21,21 @@ after_initialize do
     source_category = topic.category
     next unless source_category
 
-    mappings = SiteSetting.bm_archive_category_map
+    raw = SiteSetting.bm_archive_category_map
+    mappings =
+      (
+        if raw.is_a?(String)
+          (
+            begin
+              JSON.parse(raw)
+            rescue StandardError
+              []
+            end
+          )
+        else
+          Array(raw)
+        end
+      )
     next if mappings.blank?
 
     match =
