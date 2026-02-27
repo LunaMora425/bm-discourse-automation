@@ -31,7 +31,7 @@ after_initialize do
       end
     next unless match
 
-    archive_id = Array(m["archive_category"]).first.to_i
+    archive_id = Array(match["archive_category"]).first.to_i
     archive_category = Category.find_by(id: archive_id)
     next unless archive_category
     next if topic.category_id == archive_category.id
