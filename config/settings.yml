@@ -21,3 +21,7 @@ plugins:
           required: true
           validations:
             max: 1
+        move_closed_to_archive:
+          type: boolean
+          label: "Also move auto-closed topics to archive"
+          default: false
