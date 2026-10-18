@@ -1,0 +1,14 @@
+en:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          bm_discourse_automation: "BM Discourse Automation"
+          bm_discourse_automation_enabled: "Is this plugin enabled?"
+          bm_archive_category_map: "Archive Category Map (JSON format)"
+  js:
+    bm_discourse_automation:
+      title: "BM Discourse Automation"
+      bm_discourse_automation: "BM Discourse Automation"
+      bm_discourse_automation_enabled: "Is this plugin enabled?"
+      bm_archive_category_map: "Archive Category Map (JSON format)"

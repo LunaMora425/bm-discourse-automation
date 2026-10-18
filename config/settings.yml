@@ -1,0 +1,27 @@
+plugins:
+  bm_discourse_automation_enabled:
+    default: false
+    client: true
+
+  bm_archive_category_map:
+    client: true
+    type: objects
+    default: []
+    schema:
+      name: New Map
+      identifier: source_category
+      properties:
+        source_category:
+          type: categories
+          label: "Source Category"
+          required: true
+        archive_category:
+          type: categories
+          label: "Archive Category"
+          required: true
+          validations:
+            max: 1
+        move_closed_to_archive:
+          type: boolean
+          label: "Also move auto-closed topics to archive"
+          default: false
