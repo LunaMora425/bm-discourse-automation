@@ -10,6 +10,13 @@
 enabled_site_setting :bm_discourse_automation_enabled
 
 after_initialize do
+  on(:before_system_message_sent) do |message_type:, post_creator_args:, **|
+    next unless SiteSetting.bm_discourse_automation_enabled
+    next unless %w[welcome_user welcome_invite welcome_tl1_user].include?(message_type.to_s)
+
+    post_creator_args.last[:target_group_names] = nil
+  end
+
   on(:topic_status_updated) do |topic, status, enabled|
     next unless status == "archived" && enabled
 
