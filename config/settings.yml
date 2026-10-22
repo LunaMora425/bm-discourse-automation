@@ -3,6 +3,15 @@ plugins:
     default: false
     client: true
 
+  bm_ad_cooldown_categories:
+    type: category_list
+    default: ""
+
+  bm_ad_cooldown_days:
+    type: integer
+    default: 7
+    min: 1
+
   bm_archive_category_map:
     client: true
     type: objects

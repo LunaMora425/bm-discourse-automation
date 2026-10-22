@@ -17,6 +17,49 @@ after_initialize do
     post_creator_args.last[:target_group_names] = nil
   end
 
+  NewPostManager.add_handler do |manager|
+    next unless SiteSetting.bm_discourse_automation_enabled
+
+    category_ids = SiteSetting.bm_ad_cooldown_categories_map
+    next if category_ids.blank?
+
+    user = manager.user
+    next if user.staff? || !user.human?
+
+    args = manager.args
+    if args[:topic_id].present?
+      topic = Topic.find_by(id: args[:topic_id])
+      next unless topic
+      next unless topic.user_id == user.id && category_ids.include?(topic.category_id)
+    else
+      next if args[:archetype] == Archetype.private_message
+      next unless category_ids.include?(args[:category].to_i)
+    end
+
+    days = SiteSetting.bm_ad_cooldown_days
+    last_posted_at =
+      Post
+        .with_deleted
+        .joins("INNER JOIN topics ON topics.id = posts.topic_id")
+        .where(user_id: user.id, post_type: Post.types[:regular])
+        .where(topics: { user_id: user.id, category_id: category_ids })
+        .where("posts.created_at > ?", days.days.ago)
+        .maximum("posts.created_at")
+    next unless last_posted_at
+
+    next_post_at = (last_posted_at + days.days).in_time_zone(UserOption.user_tzinfo(user.id))
+
+    result = NewPostResult.new(:bm_ad_cooldown, false)
+    result.add_error(
+      I18n.t(
+        "bm_ad_cooldown.blocked",
+        days: days,
+        next_post_at: next_post_at.strftime("%A, %B %-d at %-l:%M %p %Z"),
+      ),
+    )
+    result
+  end
+
   on(:topic_status_updated) do |topic, status, enabled|
     next unless status == "archived" && enabled
 
