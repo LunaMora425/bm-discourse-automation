@@ -4,5 +4,10 @@ en:
     bm_archive_category_map: Archive Category Map
     bm_ad_cooldown_categories: "Ad cooldown categories. Treated as one pool: members who started a topic or posted in their own topic in any of these within the cooldown can't start another topic or bump their own here. Replies in other members' topics are not limited. Staff are exempt. Leave empty to turn off."
     bm_ad_cooldown_days: Ad cooldown length in days
+    bm_title_pairing_categories: "Categories where members can't put pairing codes (like MxF, M4F, M/M) in new or edited topic titles. Existing titles are left alone; edits are only blocked if they add a code. Staff are exempt. Leave empty to turn off."
+    bm_title_pairing_tag_groups: "Tag groups whose AxB tags (like MxF, NBxT) define the pairing codes to block in titles."
+    bm_title_pairing_slash_words: "Extra words blocked in titles when written with a trailing double slash (like enby//). Single pairing letters with a trailing // are always blocked."
+  bm_title_pairing:
+    blocked: "Please remove %{codes} from your title and use the pairing tags instead."
   bm_ad_cooldown:
     blocked: "You've already posted or bumped a one-on-one ad in the last %{days} days. You can post your next ad or bump on %{next_post_at}."

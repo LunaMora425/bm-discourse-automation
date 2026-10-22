@@ -10,6 +10,8 @@
 enabled_site_setting :bm_discourse_automation_enabled
 
 after_initialize do
+  require_relative "lib/bm_title_pairing_matcher"
+
   on(:before_system_message_sent) do |message_type:, post_creator_args:, **|
     next unless SiteSetting.bm_discourse_automation_enabled
     next unless %w[welcome_user welcome_invite welcome_tl1_user].include?(message_type.to_s)
@@ -58,6 +60,33 @@ after_initialize do
       ),
     )
     result
+  end
+
+  add_model_callback(:topic, :validate) do
+    next unless SiteSetting.bm_discourse_automation_enabled
+    next unless new_record? || title_changed?
+    next unless SiteSetting.bm_title_pairing_categories_map.include?(category_id)
+    next if acting_user.nil? || acting_user.staff? || !acting_user.human?
+
+    group_names = SiteSetting.bm_title_pairing_tag_groups.split("|")
+    tag_names = Tag.joins(:tag_groups).where(tag_groups: { name: group_names }).pluck(:name)
+    pairs = BmTitlePairingMatcher.pairs_from_tag_names(tag_names)
+    slash_words = SiteSetting.bm_title_pairing_slash_words.split("|")
+
+    old_keys =
+      if new_record?
+        []
+      else
+        BmTitlePairingMatcher.find(title_was, pairs, slash_words).map { |f| f[:key] }
+      end
+    added =
+      BmTitlePairingMatcher.find(title, pairs, slash_words).reject { |f| old_keys.include?(f[:key]) }
+    next if added.empty?
+
+    errors.add(
+      :base,
+      I18n.t("bm_title_pairing.blocked", codes: added.map { |f| "\"#{f[:text]}\"" }.join(", ")),
+    )
   end
 
   on(:topic_status_updated) do |topic, status, enabled|

@@ -12,6 +12,19 @@ plugins:
     default: 7
     min: 1
 
+  bm_title_pairing_categories:
+    type: category_list
+    default: ""
+
+  bm_title_pairing_tag_groups:
+    type: tag_group_list
+    default: ""
+
+  bm_title_pairing_slash_words:
+    type: list
+    list_type: compact
+    default: "enby"
+
   bm_archive_category_map:
     client: true
     type: objects
