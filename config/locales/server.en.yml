@@ -7,6 +7,7 @@ en:
     bm_title_pairing_categories: "Categories where members can't put pairing codes (like MxF, M4F, M/M) in new or edited topic titles. Existing titles are left alone; edits are only blocked if they add a code. Staff are exempt. Leave empty to turn off."
     bm_title_pairing_tag_groups: "Tag groups whose AxB tags (like MxF, NBxT) define the pairing codes to block in titles."
     bm_title_pairing_slash_words: "Extra words blocked in titles when written with a trailing double slash (like enby//). Single pairing letters with a trailing // are always blocked."
+    bm_quiet_staff_edits: "Don't notify members when staff edit their posts or topic titles without filling in the edit reason. Edits with a reason still notify. The edit always shows in the post's history."
   bm_title_pairing:
     blocked: "Please remove %{codes} from your title and use the pairing tags instead."
   bm_ad_cooldown:

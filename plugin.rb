@@ -89,6 +89,14 @@ after_initialize do
     )
   end
 
+  add_model_callback(:post_revision, :before_create) do
+    next unless SiteSetting.bm_discourse_automation_enabled && SiteSetting.bm_quiet_staff_edits
+    next if user.nil? || !user.staff? || post.nil? || user_id == post.user_id
+    next if post.edit_reason.present?
+
+    self.silent = true
+  end
+
   on(:topic_status_updated) do |topic, status, enabled|
     next unless status == "archived" && enabled
 

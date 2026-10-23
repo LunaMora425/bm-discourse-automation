@@ -25,6 +25,9 @@ plugins:
     list_type: compact
     default: "enby"
 
+  bm_quiet_staff_edits:
+    default: true
+
   bm_archive_category_map:
     client: true
     type: objects
