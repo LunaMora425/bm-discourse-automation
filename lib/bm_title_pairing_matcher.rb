@@ -10,7 +10,7 @@ module ::BmTitlePairingMatcher
     end.uniq
   end
 
-  def self.find(title, pairs, slash_words = [])
+  def self.find(title, pairs, slash_words = [], words = [])
     return [] if pairs.empty?
 
     text = title.to_s.unicode_normalize(:nfkc)
@@ -30,6 +30,16 @@ module ::BmTitlePairingMatcher
     text.scan(slash_regex) do
       m = Regexp.last_match
       found << { text: m[0], key: "#{m[1].downcase}//" }
+    end
+
+    word_list = words.map { |w| w.to_s.strip.downcase }.reject(&:empty?).uniq
+    if word_list.any?
+      word_alt = word_list.sort_by { |w| -w.length }.map { |w| Regexp.escape(w) }.join("|")
+      word_regex = /(?<![[:alpha:]])(#{word_alt})(?![[:alpha:]])/i
+      text.scan(word_regex) do
+        m = Regexp.last_match
+        found << { text: m[0], key: m[1].downcase }
+      end
     end
 
     found.uniq { |f| f[:key] }

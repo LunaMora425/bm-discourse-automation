@@ -72,15 +72,18 @@ after_initialize do
     tag_names = Tag.joins(:tag_groups).where(tag_groups: { name: group_names }).pluck(:name)
     pairs = BmTitlePairingMatcher.pairs_from_tag_names(tag_names)
     slash_words = SiteSetting.bm_title_pairing_slash_words.split("|")
+    words = SiteSetting.bm_title_pairing_words.split("|")
 
     old_keys =
       if new_record?
         []
       else
-        BmTitlePairingMatcher.find(title_was, pairs, slash_words).map { |f| f[:key] }
+        BmTitlePairingMatcher.find(title_was, pairs, slash_words, words).map { |f| f[:key] }
       end
     added =
-      BmTitlePairingMatcher.find(title, pairs, slash_words).reject { |f| old_keys.include?(f[:key]) }
+      BmTitlePairingMatcher
+        .find(title, pairs, slash_words, words)
+        .reject { |f| old_keys.include?(f[:key]) }
     next if added.empty?
 
     errors.add(

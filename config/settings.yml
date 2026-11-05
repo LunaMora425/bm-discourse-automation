@@ -25,6 +25,11 @@ plugins:
     list_type: compact
     default: "enby"
 
+  bm_title_pairing_words:
+    type: list
+    list_type: compact
+    default: "wlw|mlm"
+
   bm_quiet_staff_edits:
     default: true
 
